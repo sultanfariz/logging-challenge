@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"logging-challenge/handler"
+	"logging-challenge/middleware"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
@@ -32,6 +33,9 @@ func main() {
 	r.HandleFunc("/calculate", calculatorHandler.CalculateHandler)
 	r.HandleFunc("/greet", greetingHandler.GreetHandler)
 
+	// Wrap router with logger middleware
+	handler := middleware.LoggerMiddleware(r)
+
 	lf, err := os.OpenFile(
 		"logs/app.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666,
 	)
@@ -44,7 +48,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: r,
+		Handler: handler,
 	}
 
 	go func() {

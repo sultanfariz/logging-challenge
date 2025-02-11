@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"logging-challenge/middleware"
 	"logging-challenge/usecase"
 
 	"github.com/google/uuid"
@@ -35,21 +36,21 @@ func (h *CalculatorHandler) CalculateHandler(w http.ResponseWriter, r *http.Requ
 
 	num1, err := strconv.ParseFloat(num1Str, 64)
 	if err != nil {
-		log.Error().Str("function", "calculateHandler").Err(err).Msg("invalid num1 parameter")
+		middleware.LogError(ctx, "calculateHandler", err, "invalid num1 parameter")
 		http.Error(w, "invalid num1 parameter", http.StatusBadRequest)
 		return
 	}
 
 	num2, err := strconv.ParseFloat(num2Str, 64)
 	if err != nil {
-		log.Error().Str("function", "calculateHandler").Err(err).Msg("invalid num2 parameter")
+		middleware.LogError(ctx, "calculateHandler", err, "invalid num2 parameter")
 		http.Error(w, "invalid num2 parameter", http.StatusBadRequest)
 		return
 	}
 
 	result, err := h.calculatorUseCase.Calculate(ctx, num1, num2, op)
 	if err != nil {
-		log.Error().Str("function", "calculateHandler").Err(err).Msg("calculation error")
+		middleware.LogError(ctx, "calculateHandler", err, "calculation error")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

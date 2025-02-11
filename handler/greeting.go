@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"logging-challenge/middleware"
 	"logging-challenge/usecase"
 
 	"github.com/google/uuid"
@@ -31,7 +32,7 @@ func (h *GreetingHandler) GreetHandler(w http.ResponseWriter, r *http.Request) {
 
 	result, err := h.greetingUseCase.GetGreeting(ctx, name)
 	if err != nil {
-		log.Error().Str("function", "greetHandler").Err(err).Msg("greeting error")
+		middleware.LogError(ctx, "greetHandler", err, "greeting error")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
