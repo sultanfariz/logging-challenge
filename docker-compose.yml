@@ -6,6 +6,8 @@ services:
     ports:
       - 8080:8080
     restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
 
   fluentbit:
     image: fluent/fluent-bit:2.1.10

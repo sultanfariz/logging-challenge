@@ -20,6 +20,9 @@ FROM alpine:latest
 
 WORKDIR /app
 
+# Create logs directory with appropriate permissions
+RUN mkdir -p logs && chmod 755 logs
+
 # Copy the binary from builder
 COPY --from=builder /app/main .
 
