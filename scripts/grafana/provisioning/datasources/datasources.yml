@@ -12,3 +12,11 @@ datasources:
     editable: false
     jsonData:
       maxLines: 1000
+
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    version: 1
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false

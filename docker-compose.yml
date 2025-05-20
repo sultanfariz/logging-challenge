@@ -46,5 +46,18 @@ services:
       - ./scripts/loki:/etc/loki
     command: -config.file=/etc/loki/config.yaml
 
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./scripts/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.retention.time=5m'
+      - '--storage.tsdb.retention.size=10GB'
+
 volumes:
   grafana_data:
+  prometheus_data:
